@@ -1,39 +1,33 @@
 function longestPalindrome(s: string): string {
-    const arr = s;
+    let longestSub = "";
 
-    let longest : number = 0;
-    let sub : string = "";
+    // Caso base
+    if (s.length <= 1) return s;
 
-    //Caso de un unico caracter
-    if (arr.length <= 1) {
-        return arr[0];
-    }
-
-    for (let i = 0; i < arr.length; i++) {
-        let start = i;
-        let end = arr.length - 1;
-
-        let pointer = end - start;
-
-        while (pointer >= start) {
+    //Recorremos desde izquierda hacia derecha
+    for (let i = 0; i < s.length; i++) {
+        //recorremos desde derecha a izquierda
+        for (let j = s.length - 1; j >= i; j--) {
             
-            longest = pointer + 1;
+            if (j - i + 1 <= longestSub.length) break;
 
-            if (arr[end] === arr[start]) {
-                end--;
-                start++;
+            if (isPalindrome(s, i, j)) {
+                longestSub = s.substring(i, j + 1);
             }
-            
-            if (pointer === start) {
-                sub = arr.slice(start, longest)
-            }
-
-            pointer--;
         }
     }
 
-    return sub;
-};
+    return longestSub;
+}
+
+function isPalindrome(str: string, left: number, right: number): boolean {
+    while (left < right) {
+        if (str[left] !== str[right]) return false;
+        left++;
+        right--;
+    }
+    return true;
+}
 
 console.log(longestPalindrome("babad"));
 console.log(longestPalindrome("cbbd"));
